@@ -1,4 +1,6 @@
-/* General Styles */
+*{
+    font-family: 'Kanit', sans-serif;
+}
 body {
     font-family: 'Kanit', sans-serif;
     background-color: #f4f4f4;
@@ -114,6 +116,64 @@ body {
     color: #0035AD;
 }
 
+/* Login Section */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f4f4f4;
+    padding: 2rem;
+    font-family: 'Kanit', sans-serif;
+}
+
+form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Kanit', sans-serif;
+}
+
+form h2 {
+    font-family: 'Kanit', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+form .form-group {
+    margin-bottom: 1rem;
+}
+
+form .form-group label {
+    font-family: 'Kanit', sans-serif;
+}
+
+form .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #0035AD;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Kanit', sans-serif;
+}
+
+form button:hover {
+    background-color: #002a80;
+}
+
 /* Footer */
 .footer {
     background-color: #222;
@@ -148,4 +208,33 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+/* Loading Popup */
+.loading-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-popup .loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #ffffff;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-right: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
