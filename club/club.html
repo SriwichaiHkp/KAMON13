@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายชื่อนักเรียนในแต่ละชุมนุม</title>
+    <style>
+        .club-list {
+            margin-bottom: 20px;
+        }
+
+        .club-name {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>รายชื่อนักเรียนในแต่ละชุมนุม</h1>
+    
+    <div id="clubListContainer">
+        <!-- รายชื่อนักเรียนจะแสดงที่นี่ -->
+    </div>
+
+    <script>
+        const sheetyEndpoint = 'https://api.sheety.co/3c1a48deb5bbded0b2117ecce485d6eb/club/registrations';  // API ข้อมูลการสมัคร
+
+        // ดึงข้อมูลการสมัครจาก API
+        async function loadClubMembers() {
+            const response = await fetch(sheetyEndpoint);
+            const data = await response.json();
+            const students = data.sheetName; // สมมติข้อมูลนักเรียนที่สมัครมาอยู่ในคีย์ sheetName
+
+            // จัดกลุ่มนักเรียนตามชุมนุม
+            const clubs = {};
+            students.forEach(student => {
+                if (!clubs[student.club]) {
+                    clubs[student.club] = [];
+                }
+                clubs[student.club].push(student);
+            });
+
+            // สร้าง HTML เพื่อแสดงรายชื่อแต่ละชุมนุม
+            const clubListContainer = document.getElementById('clubListContainer');
+            for (const clubName in clubs) {
+                const clubDiv = document.createElement('div');
+                clubDiv.classList.add('club-list');
+
+                const clubTitle = document.createElement('h2');
+                clubTitle.classList.add('club-name');
+                clubTitle.textContent = `ชุมนุม: ${clubName}`;
+                clubDiv.appendChild(clubTitle);
+
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                const headers = ['ลำดับ', 'รหัสนักเรียน', 'ชื่อนักเรียน'];
+
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+                clubs[clubName].forEach((student, index) => {
+                    const row = document.createElement('tr');
+
+                    const cellIndex = document.createElement('td');
+                    cellIndex.textContent = index + 1;
+                    row.appendChild(cellIndex);
+
+                    const cellStudentId = document.createElement('td');
+                    cellStudentId.textContent = student.studentId;
+                    row.appendChild(cellStudentId);
+
+                    const cellName = document.createElement('td');
+                    cellName.textContent = student.name;
+                    row.appendChild(cellName);
+
+                    tbody.appendChild(row);
+                });
+
+                table.appendChild(tbody);
+                clubDiv.appendChild(table);
+                clubListContainer.appendChild(clubDiv);
+            }
+        }
+
+        loadClubMembers();
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครชุมนุม</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming you have a styles.css file -->
+</head>
+<body>
+    <nav class="navbar-custom">
+        <div class="navbar-brand">สมัครชุมนุม</div>
+    </nav>
+    
+    <section class="hero-section">
+        <h1>สมัครชุมนุม</h1>
+    </section>
+    
+    <div class="login-container">
+        <form id="clubForm">
+            <div class="form-group">
+                <label for="studentId">รหัสนักเรียน:</label>
+                <input type="text" id="studentId" name="studentId" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">ชื่อ:</label>
+                <select id="name" name="name" required>
+                    <!-- รายชื่อนักเรียนจะถูกดึงจาก API -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="club">ชุมนุม:</label>
+                <select id="club" name="club" required>
+                    <!-- รายชื่อชุมนุมจะถูกดึงจาก API -->
+                </select>
+            </div>
+
+            <button type="submit">สมัคร</button>
+        </form>
+    </div>
+
+    <!-- Loading Popup -->
+    <div id="loadingPopup" class="loading-popup" style="display: none;">
+        <div class="loading-spinner"></div> กรุณารอ...
+    </div>
+
+    <script>
+        const sheetyClubEndpoint = 'https://api.sheety.co/3c1a48deb5bbded0b2117ecce485d6eb/club/clubs';  // API ชุมนุม
+        const studentApiEndpoint = 'https://api.sheety.co/3c1a48deb5bbded0b2117ecce485d6eb/club/students'; // API นักเรียน
+        let clubs = [];
+        let students = [];
+
+        // ดึงรายชื่อชุมนุมจาก API
+        async function loadClubs() {
+            const response = await fetch(sheetyClubEndpoint);
+            const data = await response.json();
+            clubs = data.sheetName;
+            const clubSelect = document.getElementById('club');
+
+            clubs.forEach(club => {
+                const option = document.createElement('option');
+                option.value = club.name;
+                option.text = `${club.name} (รับได้ ${club.maxCapacity} คน, สมัครแล้ว ${club.currentCount} คน)`;
+                clubSelect.appendChild(option);
+            });
+        }
+
+        // ดึงรายชื่อนักเรียนจาก API อื่น
+        async function loadStudents() {
+            const response = await fetch(studentApiEndpoint);
+            const data = await response.json();
+            students = data.studentSheet;
+            const studentSelect = document.getElementById('name');
+
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.name;
+                option.text = student.name;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        // ส่งข้อมูลการสมัครไปยัง Sheety API
+        async function submitForm(event) {
+            event.preventDefault();
+            document.getElementById('loadingPopup').style.display = 'flex';
+            
+            const studentId = document.getElementById('studentId').value;
+            const name = document.getElementById('name').value;
+            const clubName = document.getElementById('club').value;
+
+            // หาชุมนุมที่นักเรียนเลือก
+            const selectedClub = clubs.find(club => club.name === clubName);
+
+            if (selectedClub.currentCount >= selectedClub.maxCapacity) {
+                alert('ชุมนุมนี้เต็มแล้ว ไม่สามารถสมัครได้');
+                document.getElementById('loadingPopup').style.display = 'none';
+            } else {
+                // อัปเดต currentCount ของชุมนุม
+                selectedClub.currentCount++;
+
+                // บันทึกข้อมูลการสมัคร
+                const response = await fetch(sheetyClubEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sheetName: {
+                            name: name,
+                            studentId: studentId,
+                            club: clubName,
+                        },
+                    }),
+                });
+
+                // อัปเดตจำนวนคนที่สมัครแล้ว
+                await fetch(`${sheetyClubEndpoint}/${selectedClub.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sheetName: {
+                            currentCount: selectedClub.currentCount,
+                        },
+                    }),
+                });
+
+                if (response.ok) {
+                    alert('สมัครสำเร็จ!');
+                } else {
+                    alert('เกิดข้อผิดพลาดในการสมัคร');
+                }
+
+                document.getElementById('loadingPopup').style.display = 'none';
+            }
+        }
+
+        document.getElementById('clubForm').addEventListener('submit', submitForm);
+        loadClubs();
+        loadStudents();
+    </script>
+</body>
+</html>
