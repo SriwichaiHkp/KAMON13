@@ -3,53 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>HKPLUS</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/imgs/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+<style>
+    .hero-section {
+    background: url('https://www.gsb.or.th/en/wp-content/themes/GSB/images/Sharing_Default.jpg') no-repeat center center/cover;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    position: relative;
+    padding: 0 2rem;
+    text-align: center;
+}
+</style>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="index.html">Sriwichai</a>
+        <a class="navbar-brand" href="index.html">HKP</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav"></div>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">หน้าหลัก</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Shop.html">สั่งเสื้อสี</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="payment.html">ข้อมูลประจำตัว</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">ติดต่อ</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">หน้าหลัก <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Login Section -->
-    <div class="login-container">
-        <form id="loginForm">
-            <h2>เข้าสู่ระบบ</h2>
-            <div class="form-group">
-                <label for="username">เลขประจำตัวนักเรียน:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">รหัสผ่าน:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-            <div id="error-message" style="color: red; margin-top: 10px;"></div>
-        </form>
-    </div>
-
+    <!-- Hero Section -->
+    <header class="hero-section text-center">
+        <div class="container">
+        </div>
+    </header>
     <!-- Footer -->
     <footer class="footer text-center">
         <div class="container">
@@ -71,6 +66,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="login.js"></script>
 </body>
 </html>

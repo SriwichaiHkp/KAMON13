@@ -30,18 +30,7 @@ body {
 }
 
 /* Hero Section */
-.hero-section {
-    background: url('123.jpg') no-repeat center center/cover;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-    position: relative;
-    padding: 0 2rem;
-    text-align: center;
-}
+
 
 .hero-section h1 {
     font-size: 3rem; /* Base font size */
